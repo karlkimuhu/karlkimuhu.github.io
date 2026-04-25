@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karl Kimuhu Gachenga — Developer & Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0E17;
+    --bg2: #0F1420;
+    --bg3: #141926;
+    --accent: #3D7BFF;
+    --accent2: #00D4AA;
+    --gold: #F5C842;
+    --text: #E8EDF5;
+    --muted: #7A8499;
+    --border: rgba(255,255,255,0.07);
+    --card: rgba(255,255,255,0.04);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10, 14, 23, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: white !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.08em;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: #2d6aee !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--accent2);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+
+  h1 .highlight {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero-desc {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 0.9rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover { background: #2d6aee; transform: translateY(-1px); }
+
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.9rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* HERO RIGHT PANEL */
+  .hero-visual {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-visual::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(61,123,255,0.15) 0%, transparent 70%);
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.red { background: #FF5F57; }
+  .dot.yellow { background: #FEBC2E; }
+  .dot.green { background: #28C840; }
+
+  .terminal-body {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 2;
+    color: var(--muted);
+  }
+
+  .term-key { color: var(--accent2); }
+  .term-val { color: var(--text); }
+  .term-str { color: var(--gold); }
+  .term-arr { color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--accent);
+    vertical-align: middle;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 4rem;
+  }
+
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--accent2);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: var(--text);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover { border-color: rgba(61,123,255,0.3); transform: translateY(-3px); }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .project-card p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stack-pill {
+    background: rgba(61,123,255,0.1);
+    border: 1px solid rgba(61,123,255,0.2);
+    color: var(--accent);
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .project-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: gap 0.2s;
+  }
+
+  .project-link:hover { gap: 0.7rem; }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem;
+  }
+
+  .skill-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+  }
+
+  /* CERTS */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .cert-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .cert-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .cert-card h4 {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .cert-issuer {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong { color: var(--text); font-weight: 500; }
+
+  .about-visual {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+    position: relative;
+  }
+
+  .timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 28px;
+    bottom: -12px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(61,123,255,0.15);
+    border: 1px solid var(--accent);
+    flex-shrink: 0;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timeline-dot::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .timeline-content h4 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-content span {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 6rem 4rem;
+    text-align: center;
+  }
+
+  .contact-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-inner p {
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'DM Mono', monospace;
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-content > * {
+    animation: fadeInUp 0.7s ease both;
+  }
+
+  .hero-tag { animation-delay: 0.1s; }
+  h1 { animation-delay: 0.2s; }
+  .hero-desc { animation-delay: 0.3s; }
+  .hero-actions { animation-delay: 0.4s; }
+
+  .hero-visual {
+    animation: fadeInUp 0.7s ease 0.5s both;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .stats-bar { padding: 2rem 1.5rem; }
+    .contact-section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">karl.kimuhu</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-tag">Available for opportunities</div>
+      <h1>Building things<br>that <span class="highlight">matter</span><br>in Kenya.</h1>
+      <p class="hero-desc">
+        Backend developer & AI practitioner based in Nairobi. I build APIs, data systems, 
+        and human-centered applications for the African market.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">View Projects →</a>
+        <a href="https://github.com/karlkimuhu" target="_blank" class="btn-ghost">GitHub</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+      </div>
+      <div class="terminal-body">
+        <span class="term-key">const</span> developer = {<br>
+        &nbsp;&nbsp;<span class="term-key">name</span>: <span class="term-str">"Karl Kimuhu"</span>,<br>
+        &nbsp;&nbsp;<span class="term-key">location</span>: <span class="term-str">"Nairobi, Kenya"</span>,<br>
+        &nbsp;&nbsp;<span class="term-key">stack</span>: [<span class="term-arr">"Python"</span>, <span class="term-arr">"FastAPI"</span>, <span class="term-arr">"JS"</span>],<br>
+        &nbsp;&nbsp;<span class="term-key">focus</span>: <span class="term-str">"Backend + AI"</span>,<br>
+        &nbsp;&nbsp;<span class="term-key">building</span>: <span class="term-str">"Imara"</span>,<br>
+        &nbsp;&nbsp;<span class="term-key">open_to</span>: <span class="term-str">"internships"</span>,<br>
+        };<br><br>
+        <span class="term-key">console</span>.<span class="term-arr">log</span>(<span class="term-str">"Let's build."</span>); <span class="cursor"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num">7+</span>
+      <span class="stat-label">Certifications</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">3+</span>
+      <span class="stat-label">Tech Stacks</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">IBM</span>
+      <span class="stat-label">AI Developer</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">KE</span>
+      <span class="stat-label">Market Focus</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Work</div>
+  <h2>Projects</h2>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-tag">Backend Engineering • Healthcare</div>
+      <h3>Ginga AI Claims</h3>
+      <p>A REST API built to automate the processing and validation of insurance health claims. Designed as a backend engineering case study for a production-grade claims management system.</p>
+      <div class="project-stack">
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">FastAPI</span>
+        <span class="stack-pill">REST API</span>
+        <span class="stack-pill">JWT Auth</span>
+      </div>
+      <a href="https://github.com/karlkimuhu/ginga-claims-ai" target="_blank" class="project-link">View on GitHub →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag">In Development • Mental Wellness</div>
+      <h3>Imara</h3>
+      <p>A mental wellness and accountability platform for young Kenyans. Includes mood tracking, sobriety streaks, daily devotionals, and anonymous peer support — built for the common wananchi.</p>
+      <div class="project-stack">
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">FastAPI</span>
+        <span class="stack-pill">PostgreSQL</span>
+        <span class="stack-pill">M-Pesa API</span>
+        <span class="stack-pill">Claude AI</span>
+      </div>
+      <a href="https://github.com/karlkimuhu" target="_blank" class="project-link">Coming Soon →</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag">Portfolio • This Site</div>
+      <h3>Portfolio Website</h3>
+      <p>A clean, dark personal portfolio built with pure HTML/CSS/JS — no framework needed. Showcases projects, skills, and certifications to potential employers and collaborators.</p>
+      <div class="project-stack">
+        <span class="stack-pill">HTML</span>
+        <span class="stack-pill">CSS</span>
+        <span class="stack-pill">JavaScript</span>
+        <span class="stack-pill">GitHub Pages</span>
+      </div>
+      <a href="https://github.com/karlkimuhu" target="_blank" class="project-link">View Source →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="background: var(--bg2); max-width:100%; padding: 6rem 4rem;">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="section-label">Capabilities</div>
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Languages & Frameworks</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">HTML</span>
+          <span class="skill-tag">CSS</span>
+          <span class="skill-tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Data & AI</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Data Analysis</span>
+          <span class="skill-tag">Generative AI</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">API Integration</span>
+          <span class="skill-tag">Data Visualization</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">IT Infrastructure</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Windows / Linux / macOS</span>
+          <span class="skill-tag">Cloud Foundations</span>
+          <span class="skill-tag">Network Protocols</span>
+          <span class="skill-tag">System Administration</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Digital Marketing</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Meta Ads Manager</span>
+          <span class="skill-tag">TikTok / Instagram</span>
+          <span class="skill-tag">Content Creation</span>
+          <span class="skill-tag">Digital Analytics</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Tools</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">Excel</span>
+          <span class="skill-tag">Postman</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Soft Skills</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Community Outreach</span>
+          <span class="skill-tag">Behavioral Analysis</span>
+          <span class="skill-tag">Communication</span>
+          <span class="skill-tag">Adaptability</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="section-label">Credentials</div>
+  <h2>Certifications</h2>
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(0,122,204,0.15);">🤖</div>
+      <div>
+        <h4>IBM AI Developer</h4>
+        <span class="cert-issuer">IBM / Coursera • Mar 2026</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(0,122,204,0.15);">📊</div>
+      <div>
+        <h4>IBM Data Analyst</h4>
+        <span class="cert-issuer">IBM / Coursera • Mar 2026</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(24,119,242,0.15);">📣</div>
+      <div>
+        <h4>Meta Social Media Marketing</h4>
+        <span class="cert-issuer">Meta / Coursera • Mar 2026</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(66,133,244,0.15);">🛠️</div>
+      <div>
+        <h4>Professional IT Support</h4>
+        <span class="cert-issuer">Google / Coursera • Jan 2026</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(0,212,170,0.15);">🌐</div>
+      <div>
+        <h4>HTML, CSS & JavaScript</h4>
+        <span class="cert-issuer">Johns Hopkins / Coursera • Aug 2024</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(245,200,66,0.15);">🧠</div>
+      <div>
+        <h4>Introduction to Psychology</h4>
+        <span class="cert-issuer">Yale University / Coursera • Jan 2026</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(255,100,100,0.15);">🎬</div>
+      <div>
+        <h4>Content Creation (Social Media)</h4>
+        <span class="cert-issuer">Coursera • Feb 2026 – Ongoing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background: var(--bg2); max-width:100%; padding: 6rem 4rem; border-top: 1px solid var(--border);">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="section-label">Background</div>
+    <h2>About Me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <strong>BBIT student at Zetech University</strong> in Nairobi, Kenya — a developer who came up the hard way, with a passion for building technology that actually solves problems for real people in Africa.</p>
+        <p>My background spans <strong>backend engineering, AI development, data analysis, and digital marketing</strong> — a combination that lets me build products end-to-end, from the API to the audience.</p>
+        <p>I'm currently building <strong>Imara</strong>, a mental wellness platform for young Kenyans — inspired by my belief that affordable, culturally relevant mental health tools can change lives.</p>
+        <p>I'm actively looking for <strong>internship opportunities</strong> in backend engineering, data, or AI. If you're building something meaningful, let's talk.</p>
+      </div>
+      <div class="about-visual">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>BBIT — Zetech University</h4>
+            <span>Jan 2026 – Present • Nairobi</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>IBM AI Developer + Data Analyst Certs</h4>
+            <span>Mar 2026 • IBM / Coursera</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>Ginga AI Claims — Backend Case Study</h4>
+            <span>Jan 2026 • Python + FastAPI</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>Google IT Support Certification</h4>
+            <span>Jan 2026 • Google / Coursera</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>Data Entry Specialist — St John's</h4>
+            <span>Feb – Jul 2022 • Community Health Data</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h4>Meru School — KCSE B+</h4>
+            <span>2016 – 2019 • Meru, Kenya</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="section-label" style="justify-content:center;">Contact</div>
+    <h2 style="margin-bottom:1rem;">Let's build something.</h2>
+    <p>Open to backend engineering internships, freelance projects, and collaborations that make a difference in Kenya and Africa.</p>
+    <div class="contact-links">
+      <a href="mailto:karlkim78@gmail.com" class="contact-link">✉ karlkim78@gmail.com</a>
+      <a href="https://github.com/karlkimuhu" target="_blank" class="contact-link">⌥ github.com/karlkimuhu</a>
+      <a href="https://linkedin.com/in/karlkimuhu" target="_blank" class="contact-link">in linkedin.com/in/karlkimuhu</a>
+      <a href="tel:+254713494320" class="contact-link">☎ 0713 494 320</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 Karl Kimuhu Gachenga — Built in Nairobi 🇰🇪
+</footer>
+
+<script>
+  // Smooth active nav highlighting
+  const sections = document.querySelectorAll('section, [id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+    });
+  });
+</script>
+</body>
+</html>
